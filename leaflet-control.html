@@ -18,100 +18,105 @@ Scale control that shows the scale of the current center of screen in metric (m/
 @demo https://leaflet-extras.github.io/leaflet-map/demo.html
 -->
 
-<dom-module id="leaflet-scale-control">
-	<style>
-		:host {display: none;}
-	</style>
-	<template>
-	</template>
-	<script>
-	"use strict";
+<dom-module id="leaflet-scale-control"><style>
+	:host {
+		display: none;
+	}
+</style>
+<template>
+</template>
+<script>
+	'use strict';
 
-	Polymer({
-		is: 'leaflet-scale-control',
+	class LeafletScaleControl extends Polymer.Element {
+		static get is() { return 'leaflet-scale-control'; }
 
-		properties: {
+		static get properties() {
 
-			/**
+			return {
+				/**
 			 * The `position` attribute sets the position of the control (one of the map corners). See control positions.
-			 * 
+			 *
 			 * @attribute position
 			 * @type string
 			 */
-			position: {
-				type: String,
-				value: "bottomleft"
-			},
-	
-			/**
-			 * The `max-width` attribute sets the maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
-			 * 
-			 * @attribute max-width
-			 * @type number
-			 */
-			maxWidth: {
-				type: Number,
-				value: 100
-			},
-	
-			/**
-			 * The `metric` attribute sets whether to show the metric scale line (m/km).
-			 * 
-			 * @attribute metric
-			 * @type boolean
-			 */
-			metric: {
-				type: Boolean,
-				value: false
-			},
-	
-			/**
-			 * The `imperial` attribute sets whether to show the imperial scale line (mi/ft).
-			 * 
-			 * @attribute imperial 
-			 * @type boolean
-			 */
-			imperial: {
-				type: Boolean,
-				value: false
-			},
-	
-			/**
-			 * The `update-when-idle` attribute sets whether the control is updated on moveend, otherwise it's always up-to-date (updated on move).
-			 * 
-			 * @attribute update-when-idle
-			 * @type boolean
-			 */
-			updateWhenIdle: {
-				type: Boolean,
-				value: false
-			},
+				position: {
+					type: String,
+					value: 'bottomleft'
+				},
 
-			container: {
-				type: Object,
-				observer: '_containerChanged'
-			}
-		},
+				/**
+				 * The `max-width` attribute sets the maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+				 *
+				 * @attribute max-width
+				 * @type number
+				 */
+				maxWidth: {
+					type: Number,
+					value: 100
+				},
 
-		_containerChanged: function() {
+				/**
+				 * The `metric` attribute sets whether to show the metric scale line (m/km).
+				 *
+				 * @attribute metric
+				 * @type boolean
+				 */
+				metric: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * The `imperial` attribute sets whether to show the imperial scale line (mi/ft).
+				 *
+				 * @attribute imperial
+				 * @type boolean
+				 */
+				imperial: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * The `update-when-idle` attribute sets whether the control is updated on moveend, otherwise it's always up-to-date (updated on move).
+				 *
+				 * @attribute update-when-idle
+				 * @type boolean
+				 */
+				updateWhenIdle: {
+					type: Boolean,
+					value: false
+				},
+
+				container: {
+					type: Object,
+					observer: '_containerChanged'
+				}
+			};
+		}
+
+		_containerChanged() {
 			if (this.container) {
 				var control = L.control.scale({
-					 position: this.position,
-					 maxWidth: this.maxWidth,
-					 metric: this.metric || !this.imperial,
-					 imperial: this.imperial || !this.metric,
-					 updateWhenIdle: this.updateWhenIdle,
+					position: this.position,
+					maxWidth: this.maxWidth,
+					metric: this.metric || !this.imperial,
+					imperial: this.imperial || !this.metric,
+					updateWhenIdle: this.updateWhenIdle
 				});
 				this.control = control;
 				this.control.addTo(this.container);
 			}
-		},
+		}
 
-		detached: function() {
+		disconnectedCallback() {
 			if (this.container && this.control) {
 				this.container.removeControl(this.control);
 			}
 		}
-	});
-	</script>
+	}
+
+	window.customElements.define(LeafletScaleControl.is, LeafletScaleControl);
+</script>
 </dom-module>

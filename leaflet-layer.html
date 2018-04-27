@@ -5,37 +5,38 @@ Abstract element representing ILayer (<a href="http://leafletjs.com/reference.ht
 -->
 
 <script>
-"use strict";
+	'use strict';
 
-var leafletMap = leafletMap || {};
-window.leafletMap.LeafletILayer = {
+	window.leafletMap = window.leafletMap || {};
+	window.leafletMap.Mixins = window.leafletMap.Mixins || {};
+	leafletMap.Mixins.LeafletILayer = Polymer.dedupingMixin((baseClass) => class extends baseClass {
 
 	/**
 	 * returns true.
 	 *
 	 * @method isLayer
 	 */
-	isLayer: function() {
+	isLayer() {
 		return true;
 	}
-};
+});
 
-window.leafletMap.LeafletTileLayer = {
+leafletMap.Mixins.LeafletTileLayer = Polymer.dedupingMixin((baseClass) => class extends baseClass {
 	/**
 	 * Fired when the tile layer starts loading tiles.
-	 * 
+	 *
 	 * @event loading
 	 */
 
 	/**
 	 * Fired when the tile layer loaded all visible tiles.
-	 * 
+	 *
 	 * @event load
 	 */
 
 	/**
 	 * Fired when a tile is requested and starts loading.
-	 * 
+	 *
 	 * @event tileloadstart
 	 * @type TileEvent
 	 * @param {HTMLElement} tile The tile element (image).
@@ -44,7 +45,7 @@ window.leafletMap.LeafletTileLayer = {
 
 	/**
 	 * Fired when a tile loads.
-	 * 
+	 *
 	 * @event tileload
 	 * @type TileEvent
 	 * @param {HTMLElement} tile The tile element (image).
@@ -53,7 +54,7 @@ window.leafletMap.LeafletTileLayer = {
 
 	/**
 	 * Fired when a tile is removed (e.g. when you have unloadInvisibleTiles on).
-	 * 
+	 *
 	 * @event tileunload
 	 * @type TileEvent
 	 * @param {HTMLElement} tile The tile element (image).
@@ -65,30 +66,31 @@ window.leafletMap.LeafletTileLayer = {
 	 *
 	 *	 'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'
 	 *
-	 * {s} means one of the available subdomains (used sequentially to help with 
+	 * {s} means one of the available subdomains (used sequentially to help with
 	 * browser parallel requests per domain limitation; subdomain values are specified
 	 * in options; a, b or c by default, can be omitted), {z} — zoom level, {x} and {y}
-	 * — tile coordinates. 
-	 * 
+	 * — tile coordinates.
+	 *
 	 * @attribute url
 	 * @type string
 	 */
-	properties: {
+	static get properties() {
 
-		/**
+		return {
+			/**
 		 * The `min-zoom` attribute sets the minimum zoom number.
-		 * 
+		 *
 		 * @attribute min-zoom
 		 * @type number
 		 */
 		minZoom: {
 			type: Number,
-			value: 0,
+			value: 0
 		},
 
 		/**
 		 * The `max-zoom` attribute sets the maximum zoom number.
-		 * 
+		 *
 		 * @attribute max-zoom
 		 * @type number
 		 */
@@ -98,8 +100,8 @@ window.leafletMap.LeafletTileLayer = {
 		},
 
 		/**
-		 * The `maxnativezoom` attribute sets the maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than maxNativeZoom will be loaded from maxZoom level and auto-scaled. 
-		 * 
+		 * The `maxnativezoom` attribute sets the maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than maxNativeZoom will be loaded from maxZoom level and auto-scaled.
+		 *
 		 * @attribute maxnativezoom
 		 * @type number
 		 */
@@ -110,7 +112,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `tile-size` attribute sets the tile size (width and height in pixels, assuming tiles are square).
-		 * 
+		 *
 		 * @attribute tile-size
 		 * @type number
 		 */
@@ -121,40 +123,40 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `subdomains` attribute sets the subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
-		 * 
+		 *
 		 * @attribute subdomains
 		 * @type string or string[]
 		 */
 		subdomains: {
 			type: String,
-			value: "abc"
+			value: 'abc'
 		},
 
 		/**
 		 * The `error-tile-url` attribute sets the URL to the tile image to show in place of the tile that failed to load.
-		 * 
+		 *
 		 * @attribute error-tile-url
 		 * @type string
 		 */
 		errorTileUrl: {
 			type: String,
-			value: ""
+			value: ''
 		},
 
 		/**
 		 * The `attribution` attribute sets the attribute. As html code needs to be escaped here, it is preferable to define it as child element.
-		 * 
+		 *
 		 * @attribute attribution
-		 * @type 
+		 * @type
 		 */
 		attribution: {
 			type: String,
-			value: ""
+			value: ''
 		},
 
 		/**
 		 * The `tms` attribute sets wether inverses Y axis numbering for tiles should be used (turn this on for TMS services).
-		 * 
+		 *
 		 * @attribute tms
 		 * @type bool
 		 */
@@ -165,7 +167,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `continuous-world` attribute sets the wether tile coordinates won't be wrapped by world width (-180 to 180 longitude) or clamped to lie within world height (-90 to 90). Use this if you use Leaflet for maps that don't reflect the real world (e.g. game, indoor or photo maps).
-		 * 
+		 *
 		 * @attribute continuous-world
 		 * @type bool
 		 */
@@ -176,7 +178,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `nowrap` attribute sets wether the tiles just won't load outside the world width (-180 to 180 longitude) instead of repeating.
-		 * 
+		 *
 		 * @attribute nowrap
 		 * @type bool
 		 */
@@ -187,7 +189,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `zoom-offset` attribute sets the zoom number used in tile URLs will be offset with this value.
-		 * 
+		 *
 		 * @attribute zoom-offset
 		 * @type number
 		 */
@@ -198,7 +200,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `zoom-reverse` attribute sets whether the zoom number used in tile URLs will be reversed (maxZoom - zoom instead of zoom)
-		 * 
+		 *
 		 * @attribute zoom-reverse
 		 * @type bool
 		 */
@@ -209,7 +211,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `opacity` attribute sets the opacity of the tile layer.
-		 * 
+		 *
 		 * @attribute opacity
 		 * @type number
 		 */
@@ -221,7 +223,7 @@ window.leafletMap.LeafletTileLayer = {
 
 		/**
 		 * The `z-index` attribute sets the explicit zIndex of the tile layer. Not set by default.
-		 * 
+		 *
 		 * @attribute z-index
 		 * @type number
 		 */
@@ -232,8 +234,8 @@ window.leafletMap.LeafletTileLayer = {
 		},
 
 		/**
-		 * The `detect-retina` attribute sets whether if user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution. 
-		 * 
+		 * The `detect-retina` attribute sets whether if user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.
+		 *
 		 * @attribute detect-retina
 		 * @type bool
 		 */
@@ -243,40 +245,39 @@ window.leafletMap.LeafletTileLayer = {
 		},
 
 		/**
-		 * The `reuse-tiles` attribute sets whether all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will in theory keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed. 
-		 * 
+		 * The `reuse-tiles` attribute sets whether all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will in theory keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.
+		 *
 		 * @attribute reuse-tiles
 		 * @type bool
 		 */
 		reuseTiles: {
 			type: Boolean,
 			value: false
-		}
+		} };
 
-	},
+	}
 	// unloadInvisibleTiles updateWhenIdle bounds
 	
 
-
-	_opacityChanged: function() {
+	_opacityChanged() {
 		if (this.layer) {
 			this.layer.setOpacity(this.opacity);
 		}
-	},
+	}
 
-	_zIndexChanged: function() {
+	_zIndexChanged() {
 		if (this.layer) {
 			this.layer.setZIndex(this.zIndex);
 		}
-	},
+	}
 
 
-	detached: function() {
+	disconnectedCallback() {
 		if (this.container && this.layer) {
 			this.container.removeLayer(this.layer);
 		}
 	}
-};
+});
 </script>
 
 
@@ -306,30 +307,32 @@ element which defines a tile layer (<a href="http://leafletjs.com/reference.html
 	</style>
 	<template>
 	</template>
-</dom-module>
 
 <script>
-"use strict";
+'use strict';
+ const tileLayerMixin = leafletMap.Mixins.LeafletILayer(
+	leafletMap.Mixins.LeafletTileLayer(Polymer.Element)
+ );
 
-Polymer({
-	is: 'leaflet-tilelayer',
-	behaviors: [leafletMap.LeafletILayer, leafletMap.LeafletTileLayer],
-	properties: {
-		url: {
+class LeafletTilelayer extends tileLayerMixin {
+	static get is() {return 'leaflet-tilelayer';}
+	static get properties() {
+		return {
+			url: {
 			type: String,
-			value: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+			value: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			observer: '_urlChanged'
 		},
-		
+
 		container: {
 			type: Object,
 			observer: '_containerChanged'
-		}
-	},
-	
-	_containerChanged: function() {
+		} };
+	}
+
+	_containerChanged() {
 		if (this.container) {
-			var cleanedUrl = this.url.replace(new RegExp("%7B([sxyz])%7D", "g"), '{$1}');
+			var cleanedUrl = this.url.replace(new RegExp('%7B([sxyz])%7D', 'g'), '{$1}');
 			var layer = L.tileLayer(cleanedUrl, {
 				attribution: Polymer.dom(this).innerHTML + this.attribution,
 				minZoom: this.minZoom,
@@ -346,26 +349,29 @@ Polymer({
 				opacity: this.opacity,
 				zIndex: this.zIndex,
 				detectRetina: this.detectRetina,
-				reuseTiles: this.reuseTiles,
+				reuseTiles: this.reuseTiles
 			});
-			this.layer = layer
+			this.layer = layer;
 
 			// forward events
 			layer.on('loading load tileloadstart tileload tileunload', function(e) {
-				this.fire(e.type, e);
+				this.dispatchEvent(new CustomEvent(e.type, e));
 			}, this);
 			this.layer.addTo(this.container);
 		}
-	},
-	
-	_urlChanged: function() {
+	}
+
+	_urlChanged() {
 		if (this.layer) {
-			var cleanedUrl = this.url.replace(new RegExp("%7B([sxyz])%7D", "g"), '{$1}');
+			var cleanedUrl = this.url.replace(new RegExp('%7B([sxyz])%7D', 'g'), '{$1}');
 			this.layer.setUrl(cleanedUrl);
 		}
 	}
-});
+}
+window.customElements.define(LeafletTilelayer.is, LeafletTilelayer);
+
 </script>
+</dom-module>
 
 
 
@@ -395,57 +401,59 @@ element which defines a tile layer for wms (<a href="http://leafletjs.com/refere
 	</style>
 	<template>
 	</template>
-</dom-module>
 <script>
-	"use strict";
+	'use strict';
+	const tileWmsMixin = leafletMap.Mixins.LeafletILayer(
+		leafletMap.Mixins.LeafletTileLayer(Polymer.Element)
+	);
 
-	Polymer({
-		is: 'leaflet-tilelayer-wms',
-		behaviors: [leafletMap.LeafletILayer, leafletMap.LeafletTileLayer],
+	class LeafletTileLayerWms extends tileWmsMixin {
+		static get is() {return 'leaflet-tilelayer-wms';}
 
-		properties: {
+		static get properties() {
 
-			url: {
+			return {
+				url: {
 				type: String,
 				observer: '_urlChanged'
 			},
 
 			/**
 			 * The `layers` attribute sets the comma-separated list of WMS layers to show (required).
-			 * 
+			 *
 			 * @attribute layers
 			 * @type string
 			 */
 			layers: {
 				type: String,
-				value: "" 
+				value: ''
 			},
 	
 			/**
 			 * The `styles` attribute sets the comma-separated list of WMS styles.
-			 * 
+			 *
 			 * @attribute styles
 			 * @type string
 			 */
 			styles: {
 				type: String,
-				value: ""
+				value: ''
 			},
 	
 			/**
 			 * The `format` attribute sets the WMS image format (use 'image/png' for layers with transparency).
-			 * 
+			 *
 			 * @attribute format
 			 * @type string
 			 */
 			format: {
 				type: String,
-				value: "image/jpeg"
+				value: 'image/jpeg'
 			},
 	
 			/**
 			 * The `transparent` attribute whether the WMS service will return images with transparency.
-			 * 
+			 *
 			 * @attribute transparent
 			 * @type string
 			 */
@@ -456,30 +464,31 @@ element which defines a tile layer for wms (<a href="http://leafletjs.com/refere
 	
 			/**
 			 * The `version` attribute sets the version of the WMS service to use.
-			 * 
+			 *
 			 * @attribute version
 			 * @type string
 			 */
 			version: {
 				type: String,
-				value: "1.1.1"
+				value: '1.1.1'
 			},
 	
 			/**
 			 * The `crs` attribute sets the coordinate Reference System to use for the WMS requests, defaults to map CRS. Don't change this if you're not sure what it means.
-			 * 
+			 *
 			 * @attribute crs
 			 * @type string
 			 */
 			crs: Object,
-			
+	
 			container: {
 				type: Object,
 				observer: '_containerChanged'
-			}
+			} };
 	
-		},		
-		_containerChanged: function() {
+		}
+
+		_containerChanged() {
 			if (this.container) {
 				var layer = L.tileLayer.wms(this.url, {
 					attribution: Polymer.dom(this).innerHTML + this.attribution,
@@ -498,29 +507,33 @@ element which defines a tile layer for wms (<a href="http://leafletjs.com/refere
 					zIndex: this.zIndex,
 					detectRetina: this.detectRetina,
 					reuseTiles: this.reuseTiles,
-					
+	
 					layers: this.layers,
 					styles: this.styles,
 					format: this.format,
 					transparent: this.transparent,
 					version: this.version,
-					crs: this.crs,
+					crs: this.crs
 				});
-				this.layer = layer
+				this.layer = layer;
 
 				// forward events
 				layer.on('loading load tileloadstart tileload tileunload', function(e) {
-					this.fire(e.type, e);
+					this.dispatchEvent(new CustomEvent(e.type, e));
 				}, this);
 				this.layer.addTo(this.container);
 			}
-		},
+		}
 
-		_urlChanged: function() {
+		_urlChanged() {
 			if (this.layer) {
 				this.layer.setUrl(this.url);
 			}
-		},
+		}
 
-	});
+	}
+	window.customElements.define(LeafletTileLayerWms.is, LeafletTileLayerWms);
+
 </script>
+</dom-module>
+-
