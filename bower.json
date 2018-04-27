@@ -1,11 +1,11 @@
 {
   "name": "leaflet-map",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "authors": [
     "Hendrik Brummermann <nhnb@users.sourceforge.net>",
     "Prateek Saxena <prtksxna@gmail.com>"
   ],
-  "description": "Leaflet map as web-component based on polymer",
+  "description": "Leaflet map as web-component based on polymer 2",
   "main": "leaflet-map.html",
   "homepage": "https://leaflet-extras.github.io/leaflet-map/",
   "keywords": [
@@ -25,7 +25,7 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "^1.0.0",
+    "polymer": "Polymer/polymer#^2.0.0",
     "leaflet": "^0.7.3"
   }
 }
