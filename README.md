@@ -1,4 +1,6 @@
-# leaflet-map
+# Etools Leaflet Map Component
+
+This will be a polymer 2 update to the leaflet polymer component project that has stopped being supported by original author.
 
 *leaflet-map* is a web-component which provides access to the [leaflet map](http://leafletjs.com) 
 JavaScript library via html elements.
