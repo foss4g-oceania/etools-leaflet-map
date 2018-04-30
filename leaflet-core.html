@@ -637,7 +637,6 @@ add a marker with a popup text.
 
 		ready() {
 			super.ready();
-			console.log('ready');
 			// TODO09: Workaround for removed domReady event
 			var me = this;
 			setTimeout(function() {me.domReady();}, 1);
@@ -693,7 +692,6 @@ add a marker with a popup text.
 			});
 			this.map = map;
 
-			console.log('this map', map);
 			// fire an event for when this.map is defined and ready.
 			// (needed for components that talk to this.map directly)
 			this.dispatchEvent(new CustomEvent('map-ready'));
