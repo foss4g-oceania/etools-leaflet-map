@@ -1,6 +1,6 @@
 # Etools Leaflet Map Component
 
-This will be a polymer 2 update to the leaflet polymer component project that has stopped being supported by original author.
+This is a Polmyer 2 port of the original project found at leaflet-extras/leaflet-map.
 
 *leaflet-map* is a web-component which provides access to the [leaflet map](http://leafletjs.com) 
 JavaScript library via html elements.
@@ -27,7 +27,7 @@ or checkout the [demo](http://leaflet-extras.github.io/leaflet-map/).
 Install this web component using [Bower](http://bower.io):
 
 ```
-bower install leaflet-map
+bower install unicef-polymer/etools-leaflet-map#latest
 ```
 
 Import the main component and start creating your map:
